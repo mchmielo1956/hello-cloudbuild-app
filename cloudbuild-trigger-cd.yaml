@@ -107,8 +107,7 @@ steps:
   args:
   - push
   - origin
-  - main:
-  - candidate
+  - main:candidate
   volumes:
   - name: 'ssh'
     path: /root/.ssh
