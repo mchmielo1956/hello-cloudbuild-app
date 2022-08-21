@@ -100,7 +100,7 @@ steps:
     Author: $(git log --format='%an <%ae>' -n 1 HEAD)"  && \
     git remote -v && \
     git status && \
-    git push origin main:candidate
+    git push origin candidate
 
 
 availableSecrets:
