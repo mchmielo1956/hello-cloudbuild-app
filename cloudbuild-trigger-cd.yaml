@@ -42,11 +42,33 @@ steps:
 # [END cloudbuild]
 
 # [START cloudbuild-trigger-cd]
-# This step clones the hello-cloudbuild-env repository
-- name: 'gcr.io/cloud-builders/gcloud'
-  id: Clone env repository
-  entrypoint: git
-  args: ['clone', 'git@github.com:mchmielo1956/hello-cloudbuild-env.git']  
+- name: 'gcr.io/cloud-builders/git'
+  secretEnv: ['SSH_KEY']
+  entrypoint: 'bash'
+  args:
+  - -c
+  - |
+    echo "$$SSH_KEY" >> /root/.ssh/id_rsa
+    chmod 400 /root/.ssh/id_rsa
+    cp known_hosts.github /root/.ssh/known_hosts
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+# Clone the repository
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - clone
+  - --recurse-submodules
+  - git@github.com:mchmielo1956/hello-cloudbuild-env
+  volumes:
+  - name: 'ssh'
+    path: /root/.ssh
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/gitopsgke/secrets/github-ssh/versions/latest
+    env: 'SSH_KEY'  
   
 # This step modified the hello-cloudbuild-env repository
 - name: 'gcr.io/cloud-builders/gcloud'
