@@ -107,6 +107,7 @@ steps:
   args:
   - push
   - origin
+  - main:
   - candidate
   volumes:
   - name: 'ssh'
