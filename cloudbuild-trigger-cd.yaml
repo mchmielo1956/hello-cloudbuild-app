@@ -101,7 +101,7 @@ steps:
     git remote -v && \
     git status && \
     git push origin candidate
-    volumes:
+  volumes:
   - name: 'ssh'
     path: /root/.ssh
 
